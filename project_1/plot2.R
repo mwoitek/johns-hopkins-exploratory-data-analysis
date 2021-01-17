@@ -32,9 +32,25 @@ dat <-
     Date == as.Date("2007-02-01", format = "%Y-%m-%d") |
     Date == as.Date("2007-02-02", format = "%Y-%m-%d")
   ) %>%
+  select(Date, Time, Global_active_power) %>%
+  # Create a column by combining `Date` and `Time`:
+  mutate(date_time = as.POSIXct(paste(Date, Time))) %>%
+  select(date_time, Global_active_power)
 
-# Plot the x:
+# Translate the names of the weekdays into English:
+Sys.setlocale("LC_TIME", "en_US.utf8")
+
+# Plot the time series:
 par(bg = NA)
-# plot
+with(
+  dat,
+  plot(
+    x = date_time,
+    y = Global_active_power,
+    type = "l",
+    xlab = "",
+    ylab = "Global Active Power (kilowatts)"
+  )
+)
 dev.copy(png, file.path("my_figures", "plot2.png"))
 dev.off()
