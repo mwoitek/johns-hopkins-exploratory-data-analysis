@@ -10,7 +10,10 @@ library(readr)
 # library, since this function can deal with compressed files.
 dat <-
   read_delim(
-    file = "./data/exdata_data_household_power_consumption.zip",
+    file = file.path(
+      "data",
+      "exdata_data_household_power_consumption.zip"
+    ),
     delim = ";",
     na = c("?"),
     col_types = cols(
@@ -28,4 +31,10 @@ dat <-
   filter(
     Date == as.Date("2007-02-01", format = "%Y-%m-%d") |
     Date == as.Date("2007-02-02", format = "%Y-%m-%d")
-  )
+  ) %>%
+
+# Plot the x:
+par(bg = NA)
+# plot
+dev.copy(png, file.path("my_figures", "plot2.png"))
+dev.off()
