@@ -10,7 +10,10 @@ library(readr)
 # library, since this function can deal with compressed files.
 dat <-
   read_delim(
-    file = "./data/exdata_data_household_power_consumption.zip",
+    file = file.path(
+      "data",
+      "exdata_data_household_power_consumption.zip"
+    ),
     delim = ";",
     na = c("?"),
     col_types = cols(
@@ -32,9 +35,12 @@ dat <-
   pull(Global_active_power)
 
 # Plot the histogram:
+par(bg = NA)
 hist(
   dat,
-  col = "orangered",
+  col = "red",
   main = "Global Active Power",
   xlab = "Global Active Power (kilowatts)"
 )
+dev.copy(png, file.path("my_figures", "plot1.png"))
+dev.off()
