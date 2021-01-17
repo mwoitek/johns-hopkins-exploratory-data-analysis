@@ -1,19 +1,16 @@
-# R code for creating the 4th figure.
+# R code for creating the 4th figure
 
-# Import the necessary libraries:
+# Import the necessary libraries
 library(dplyr)
 library(magrittr)
 library(readr)
 
-# Get only the data I'm going to use to create this graph.
-# To read the data file, I'm using the `read_delim` function from the `readr`
-# library, since this function can deal with compressed files.
+# Get only the data I'm going to use to create this graph. To read the data
+# file, I'm using the `read_delim` function from the `readr` library, since
+# this function can deal with compressed files.
 dat <-
   read_delim(
-    file = file.path(
-      "data",
-      "exdata_data_household_power_consumption.zip"
-    ),
+    file = file.path("data", "exdata_data_household_power_consumption.zip"),
     delim = ";",
     na = c("?"),
     col_types = cols(
@@ -42,18 +39,21 @@ dat <-
     Sub_metering_2,
     Sub_metering_3
   ) %>%
-  # Create a column by combining `Date` and `Time`:
+  # Create a column by combining `Date` and `Time`
   mutate(datetime = as.POSIXct(paste(Date, Time))) %>%
   select(!c(Date, Time))
 
-# Translate the names of the weekdays into English:
+# Translate the names of the weekdays into English. Maybe you don't need this,
+# but I do. The following command is system-dependent, and probably won't work
+# if you're not running Linux.
 Sys.setlocale("LC_TIME", "en_US.utf8")
 
-# Create the four plots:
+# Create the four plots
 
+# Make the background transparent, and define the layout
 par(bg = NA, mfrow = c(2, 2))
 
-# Top left:
+# Top left
 with(
   dat,
   plot(
@@ -65,7 +65,7 @@ with(
   )
 )
 
-# Top right:
+# Top right
 with(
   dat,
   plot(
@@ -75,8 +75,9 @@ with(
   )
 )
 
-# Bottom left:
+# Bottom left
 
+# 1st time series
 with(
   dat,
   plot(
@@ -88,6 +89,7 @@ with(
   )
 )
 
+# 2nd time series
 with(
   dat,
   lines(
@@ -97,6 +99,7 @@ with(
   )
 )
 
+# 3rd time series
 with(
   dat,
   lines(
@@ -117,7 +120,7 @@ legend(
   y.intersp = 0.7
 )
 
-# Bottom right:
+# Bottom right
 with(
   dat,
   plot(
@@ -127,5 +130,6 @@ with(
   )
 )
 
-dev.copy(png, file.path("my_figures", "plot4.png"))
+# Export to PNG
+dev.copy(png, "plot4.png")
 dev.off()

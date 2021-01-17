@@ -1,19 +1,16 @@
-# R code for creating the 1st figure.
+# R code for creating the 1st figure
 
-# Import the necessary libraries:
+# Import the necessary libraries
 library(dplyr)
 library(magrittr)
 library(readr)
 
-# Get only the data I'm going to use to create this graph.
-# To read the data file, I'm using the `read_delim` function from the `readr`
-# library, since this function can deal with compressed files.
+# Get only the data I'm going to use to create this graph. To read the data
+# file, I'm using the `read_delim` function from the `readr` library, since this
+# function can deal with compressed files.
 dat <-
   read_delim(
-    file = file.path(
-      "data",
-      "exdata_data_household_power_consumption.zip"
-    ),
+    file = file.path("data", "exdata_data_household_power_consumption.zip"),
     delim = ";",
     na = c("?"),
     col_types = cols(
@@ -34,13 +31,18 @@ dat <-
   ) %>%
   pull(Global_active_power)
 
-# Plot the histogram:
+# Plot the histogram
+
+# Make the background transparent
 par(bg = NA)
+
 hist(
   dat,
   col = "red",
   main = "Global Active Power",
   xlab = "Global Active Power (kilowatts)"
 )
-dev.copy(png, file.path("my_figures", "plot1.png"))
+
+# Export to PNG
+dev.copy(png, "plot1.png")
 dev.off()
